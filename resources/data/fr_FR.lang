@@ -1,0 +1,5 @@
+language.name=Français
+
+;Plugin
+plugin.invalid.plugin.file=Le fichier {%0} du plugin est invalide.
+plugin.load.error=Erreur lors du chargement des plugins.
