@@ -1,0 +1,8 @@
+# Config of ArkaniaStudios-Ange
+
+server-name: Arkania-Test
+
+# english => English
+# french => French
+default-language: english
+console-language: french
