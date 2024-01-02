@@ -57,9 +57,6 @@ class PluginManager implements NotOtherInstanceInterface {
         return $this->plugins[$name] ?? null;
     }
 
-    /**
-     * @throws ReflectionException
-     */
     private function internalLoadPlugin(string $path, PluginLoader $loader, PluginInformations $informations) : ?EnginePlugin {
         $language = $this->engine->getLanguage();
         $name = $informations->getName();
@@ -187,7 +184,9 @@ class PluginManager implements NotOtherInstanceInterface {
                 $this->engine->getLogger()->critical(
                     $language->translate(
                         KnownTranslationFactory::pocketmine_plugin_loadError(
-                            $name, $loadabilityError)
+                            $name,
+                            $loadabilityError
+                        )
                     )
                 );
                 $loadErrorCount++;

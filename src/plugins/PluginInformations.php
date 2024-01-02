@@ -61,8 +61,8 @@ class PluginInformations {
         $this->website = $map["website"] ?? "";
         $this->author = $map["author"] ?? "";
         $this->authors = $map["authors"] ?? [];
-        if(isset($map['depends'])){
-            $this->depends = (array) $map['depends'];
+        if(isset($map['depend'])){
+            $this->depends = (array) $map['depend'];
         }
         $this->map = $map;
     }
