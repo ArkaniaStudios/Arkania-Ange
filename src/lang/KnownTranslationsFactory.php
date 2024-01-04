@@ -20,6 +20,22 @@ namespace arkania\lang;
 use pocketmine\lang\Translatable;
 
 final class KnownTranslationsFactory{
+	public static function form_button_no_permission(Translatable|string $param0) : Translatable{
+		return new Translatable(KnownTranslationsKeys::FORM_BUTTON_NO_PERMISSION, [
+			0 => $param0,
+		]);
+	}
+
+	public static function form_open_no_permission(Translatable|string $param0) : Translatable{
+		return new Translatable(KnownTranslationsKeys::FORM_OPEN_NO_PERMISSION, [
+			0 => $param0,
+		]);
+	}
+
+	public static function form_title() : Translatable{
+		return new Translatable(KnownTranslationsKeys::FORM_TITLE, []);
+	}
+
 	public static function language_name() : Translatable{
 		return new Translatable(KnownTranslationsKeys::LANGUAGE_NAME, []);
 	}
@@ -32,6 +48,10 @@ final class KnownTranslationsFactory{
 
 	public static function plugin_load_error() : Translatable{
 		return new Translatable(KnownTranslationsKeys::PLUGIN_LOAD_ERROR, []);
+	}
+
+	public static function plugin_server_closed() : Translatable{
+		return new Translatable(KnownTranslationsKeys::PLUGIN_SERVER_CLOSED, []);
 	}
 
 }

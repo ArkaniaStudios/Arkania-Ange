@@ -6,3 +6,10 @@ server-name: Arkania-Test
 # french => French
 default-language: english
 console-language: french
+
+database:
+  host: '45.145.164.37'
+  username: 'ArkaniaStudios-Prod'
+  password: '!4Zb2a1x2'
+  schema: 'ArkaniaStudios-Prod'
+  port: 3306
