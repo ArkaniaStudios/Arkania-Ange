@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace arkania\database;
 
+use arkania\utils\promise\PromiseInterface;
 use Logger;
-use React\Promise\PromiseInterface;
 
 interface DataConnector {
 

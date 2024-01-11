@@ -17,7 +17,6 @@ use mysqli;
 use mysqli_result;
 use mysqli_sql_exception;
 use mysqli_stmt;
-use plutoniumEngine\database\mysqli\MysqlFlags;
 use pocketmine\snooze\SleeperHandlerEntry;
 use pocketmine\thread\log\AttachableThreadSafeLogger;
 
@@ -172,7 +171,7 @@ class MysqliThread extends SqlSlaveThread {
             if($field->type === MysqlTypes::LONGLONG){
                 $type = SqlColumnInfo::TYPE_INT;
                 $columnFunc[$field->name] = static function($longLong) use ($field){
-                    if($field->flags & MysqlFlags::UNSIGNED_FLAG){
+                    if($field->flags & MysqliFlags::UNSIGNED_FLAG){
                         if(bccomp(strval($longLong), "9223372036854775807") === 1){
                             $longLong = bcsub($longLong, "18446744073709551616");
                         }
@@ -181,7 +180,7 @@ class MysqliThread extends SqlSlaveThread {
 
                     return (int) $longLong;
                 };
-            }elseif($field->flags & MysqlFlags::TIMESTAMP_FLAG){
+            }elseif($field->flags & MysqliFlags::TIMESTAMP_FLAG){
                 $type = SqlColumnInfo::TYPE_TIMESTAMP;
                 $columnFunc[$field->name] = static function($stamp){
                     return strtotime($stamp);
