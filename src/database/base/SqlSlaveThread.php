@@ -58,9 +58,7 @@ abstract class SqlSlaveThread extends Thread implements SqlThread {
 
             try{
                 $results = [];
-                foreach($queries as $index => $query){
-                    $results[] = $this->executeQuery($resource, $modes[$index], $query, $params[$index]);
-                }
+                $results[] = $this->executeQuery($resource, $modes, $queries, $params);
                 $this->bufferRecv->publishResult($queryId, $results);
             }catch(SqlError $error){
                 $this->bufferRecv->publishError($queryId, $error);

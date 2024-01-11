@@ -84,8 +84,7 @@ class SqlThreadPool implements SqlThread {
             if(!isset($callbacks[$queryId])){
                 throw new InvalidArgumentException("Missing handler for query #$queryId");
             }
-
-            $callbacks[$queryId]($results);
+            $callbacks[$queryId]($this->hasConnError(), $results);
             unset($callbacks[$queryId]);
         }
     }

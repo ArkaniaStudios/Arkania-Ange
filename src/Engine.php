@@ -12,12 +12,18 @@ use arkania\player\permissions\PermissionsManager;
 use arkania\plugins\ServerLoader;
 use arkania\utils\AlreadyInstantiatedException;
 use arkania\utils\BadExtensionException;
+use arkania\webhook\AlreadyRegisteredException;
+use arkania\webhook\WebhookManager;
+use arkania\webhook\WebhookNamesKeys;
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use ReflectionException;
 use Symfony\Component\Filesystem\Path;
 
 require_once __DIR__ . '/CoreConstants.php';
+require_once __DIR__ . '/webhook/format/TextFormateur.php';
+require_once __DIR__ . '/utils/promise/functions.php';
 
 class Engine extends PluginBase {
     use SingletonTrait {
@@ -31,11 +37,13 @@ class Engine extends PluginBase {
     private PermissionsManager $permissionManager;
     private ListenerManager $listenerManager;
     private DataBaseManager $dataBaseManager;
+    private WebhookManager $webhookManager;
 
     /**
      * @throws BadExtensionException
      * @throws AlreadyInstantiatedException
      * @throws ReflectionException
+     * @throws AlreadyRegisteredException
      */
     protected function onLoad() : void {
         self::setInstance($this);
@@ -47,6 +55,7 @@ class Engine extends PluginBase {
         $this->serverLoader = new ServerLoader($this, $this->getServer());
         $this->permissionManager = new PermissionsManager();
         $this->listenerManager = new ListenerManager();
+        $this->webhookManager = new WebhookManager($this);
         $this->serverLoader->loadEnginePlugins();
     }
 
@@ -54,13 +63,17 @@ class Engine extends PluginBase {
         $this->permissionManager->registerEnumPermission(PermissionsBase::cases());
         $this->serverLoader->enableEnginePlugins();
 
-        $this->getDataBaseManager()->getConnector()->executeSelect(
-            'SELECT language FROM languages WHERE player_name = ?',
-            ['Julien8436'],
-        )->then(function (array $rows){
-            var_dump($rows);
-        });
-
+        $this->getWebhookManager()->getWebhook(WebhookNamesKeys::SERVER_START)->send(
+            $this->getConfig()->get('server-name'),
+            $this->getServer()->getIp(),
+            $this->getServer()->getPort(),
+            ProtocolInfo::CURRENT_PROTOCOL,
+            ProtocolInfo::MINECRAFT_VERSION_NETWORK,
+            $this->getApiVersion(),
+            $this->getServer()->getMaxPlayers(),
+            count($this->getServer()->getOnlinePlayers()),
+            PHP_VERSION
+        );
     }
 
     protected function onDisable() : void {
@@ -97,6 +110,10 @@ class Engine extends PluginBase {
 
     public function getDataBaseManager() : DataBaseManager {
         return $this->dataBaseManager;
+    }
+
+    public function getWebhookManager() : WebhookManager {
+        return $this->webhookManager;
     }
 
 }

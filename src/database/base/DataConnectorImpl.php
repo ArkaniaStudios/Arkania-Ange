@@ -6,10 +6,10 @@ namespace arkania\database\base;
 use arkania\database\DataConnector;
 use arkania\database\SqlError;
 use arkania\database\SqlThread;
+use arkania\utils\promise\Deferred;
+use arkania\utils\promise\PromiseInterface;
 use Logger;
 use pocketmine\plugin\Plugin;
-use React\Promise\Deferred;
-use React\Promise\PromiseInterface;
 
 class DataConnectorImpl implements DataConnector {
 
@@ -64,11 +64,11 @@ class DataConnectorImpl implements DataConnector {
     private function executeImplRaw(string $query, int $mode, array $params) : PromiseInterface {
         $queryId = $this->queryId++;
         $def = new Deferred();
-        $this->handlers[$queryId] = function(SqlError $error = null, array $rows = []) use ($def) : void{
-            if($error !== null){
-                $def->reject($error);
+        $this->handlers[$queryId] = function(bool $error, array $rows = []) use ($def) : void{
+            if($error === true){
+                $def->reject(new SqlError(SqlError::STAGE_EXECUTE, "Query failed"));
             }else{
-                $def->resolve($rows);
+                $def->resolve($rows[0]);
             }
         };
         $this->thread->addQuery($queryId, $mode, $query, $params);
