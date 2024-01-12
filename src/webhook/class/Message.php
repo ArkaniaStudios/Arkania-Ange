@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace arkania\webhook\class;
 
 use JsonSerializable;
-use pmmp\thread\ThreadSafeArray;
 
 final class Message implements JsonSerializable {
 
@@ -27,7 +26,10 @@ final class Message implements JsonSerializable {
         $this->data['tts'] = $tts;
     }
 
-    public function addEmbed(Embed $embed) : void {
+    public function addEmbed(?Embed $embed) : void {
+        if ($embed === null) {
+            return;
+        }
         $this->data['embeds'][] = $embed->__toArray();
     }
 

@@ -37,6 +37,7 @@ class WebhookManager implements NotOtherInstanceInterface {
             WebhookNamesKeys::SERVER_START,
             new ServerEnableWebhook(
                 $engine,
+                WebhookNamesKeys::SERVER_START,
                 self::URL,
                 bolt('SEVER - START'),
                 $footer,

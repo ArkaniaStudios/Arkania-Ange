@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace arkania\webhook\class;
 
 use arkania\Engine;
+use arkania\events\webhook\WebhookSendEvent;
 use arkania\utils\NotOtherInstanceInterface;
 use arkania\utils\NotOtherInstanceTrait;
 use arkania\webhook\thread\WebhookThread;
@@ -20,6 +21,7 @@ abstract class Webhook implements NotOtherInstanceInterface {
 
     public function __construct(
         Engine $engine,
+        private string $name,
         string $url,
         string $title,
         string $footer,
@@ -54,9 +56,24 @@ abstract class Webhook implements NotOtherInstanceInterface {
     }
 
     public function submit(bool $useEmbed = true) : void {
-        if($useEmbed) {
-            $this->message->addEmbed($this->embed);
+        $convertType = match ($useEmbed) {
+            true => "embed",
+            false => "message"
+        };
+        $ev = new WebhookSendEvent(
+            $this->name,
+            $convertType,
+            json_encode($this->message),
+            $useEmbed ? $this->embed : null
+        );
+        $ev->call();
+        if($ev->isCancelled()){
+            return;
         }
+        if(!$useEmbed){
+            $this->message->setContent($ev->getMessage());
+        }
+        $this->message->addEmbed($ev->getEmbed());
         $this->getEngine()->getServer()->getAsyncPool()->submitTask(new WebhookThread(
             $this->url,
             json_encode($this->message)
