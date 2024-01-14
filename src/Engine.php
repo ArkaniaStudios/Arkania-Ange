@@ -3,10 +3,19 @@ declare(strict_types=1);
 
 namespace arkania;
 
+use arkania\commands\CommandCache;
+use arkania\commands\default\ReplyCommand;
+use arkania\commands\default\TellCommand;
+use arkania\commands\listener\CommandDataListener;
 use arkania\database\DataBaseManager;
 use arkania\events\ListenerManager;
 use arkania\lang\Language;
 use arkania\lang\LanguageManager;
+use arkania\listener\PlayerLoginListener;
+use arkania\network\server\EngineServer;
+use arkania\network\server\ServerInterface;
+use arkania\network\server\ServerManager;
+use arkania\network\server\ServersIds;
 use arkania\player\permissions\PermissionsBase;
 use arkania\player\permissions\PermissionsManager;
 use arkania\plugins\ServerLoader;
@@ -38,6 +47,8 @@ class Engine extends PluginBase {
     private ListenerManager $listenerManager;
     private DataBaseManager $dataBaseManager;
     private WebhookManager $webhookManager;
+    private ServerManager $serverManager;
+    private CommandCache $commandCache;
 
     /**
      * @throws BadExtensionException
@@ -56,27 +67,65 @@ class Engine extends PluginBase {
         $this->permissionManager = new PermissionsManager();
         $this->listenerManager = new ListenerManager();
         $this->webhookManager = new WebhookManager($this);
+        $this->serverManager = new ServerManager();
+        $this->commandCache = new CommandCache($this);
+
+        $this->getServerManager()->addServer(
+            new EngineServer(
+                $this,
+                1,
+                $this->getConfig()->get('server-name'),
+                'arkaniastudios.com',
+                19132,
+                ServerInterface::STATUS_ONLINE
+            )
+        );
+
         $this->serverLoader->loadEnginePlugins();
     }
 
     protected function onEnable() : void {
         $this->permissionManager->registerEnumPermission(PermissionsBase::cases());
+
+        $this->getCommandCache()->unregisterCommands(
+            'version',
+            'tell',
+            'pl'
+        );
+
+        $this->getCommandCache()->registerCommands(
+            new TellCommand(),
+            new ReplyCommand()
+        );
+
+        $this->getListenerManager()->registerListeners(
+            new PlayerLoginListener()
+        );
+
         $this->serverLoader->enableEnginePlugins();
 
-        $this->getWebhookManager()->getWebhook(WebhookNamesKeys::SERVER_START)->send(
-            $this->getConfig()->get('server-name'),
-            $this->getServer()->getIp(),
-            $this->getServer()->getPort(),
-            ProtocolInfo::CURRENT_PROTOCOL,
-            ProtocolInfo::MINECRAFT_VERSION_NETWORK,
-            $this->getApiVersion(),
-            $this->getServer()->getMaxPlayers(),
-            count($this->getServer()->getOnlinePlayers()),
-            PHP_VERSION
-        );
+        if(VersionInfo::IS_DEVELOPMENT_BUILD){
+            $this->getServer()->getLogger()->info('§6Engine is running on development build');
+        }else{
+            $this->getWebhookManager()->getWebhook(WebhookNamesKeys::SERVER_START)->send(
+                $this->getConfig()->get('server-name'),
+                $this->getServer()->getIp(),
+                $this->getServer()->getPort(),
+                ProtocolInfo::CURRENT_PROTOCOL,
+                ProtocolInfo::MINECRAFT_VERSION_NETWORK,
+                $this->getApiVersion(),
+                $this->getServer()->getMaxPlayers(),
+                count($this->getServer()->getOnlinePlayers()),
+                PHP_VERSION
+            );
+        }
+
+        new CommandDataListener($this);
     }
 
     protected function onDisable() : void {
+        $this->getServerManager()->getServer(ServersIds::getIdWithPort($this->getServer()->getPort()))->setStatus(ServerInterface::STATUS_OFFLINE);
+
        $this->serverLoader->disableEnginePlugins();
     }
 
@@ -114,6 +163,14 @@ class Engine extends PluginBase {
 
     public function getWebhookManager() : WebhookManager {
         return $this->webhookManager;
+    }
+
+    public function getServerManager() : ServerManager {
+        return $this->serverManager;
+    }
+
+    public function getCommandCache() : CommandCache {
+        return $this->commandCache;
     }
 
 }

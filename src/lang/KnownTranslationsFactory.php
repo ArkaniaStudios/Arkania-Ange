@@ -20,24 +20,40 @@ namespace arkania\lang;
 use pocketmine\lang\Translatable;
 
 final class KnownTranslationsFactory{
-	public static function form_button_no_permission(Translatable|string $param0) : Translatable{
-		return new Translatable(KnownTranslationsKeys::FORM_BUTTON_NO_PERMISSION, [
+	public static function command_reply_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_REPLY_DESCRIPTION, []);
+	}
+
+	public static function command_reply_no_player() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_REPLY_NO_PLAYER, []);
+	}
+
+	public static function command_tell_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_TELL_DESCRIPTION, []);
+	}
+
+	public static function command_tell_message_received(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_TELL_MESSAGE_RECEIVED, [
 			0 => $param0,
+			1 => $param1,
 		]);
 	}
 
-	public static function form_open_no_permission(Translatable|string $param0) : Translatable{
-		return new Translatable(KnownTranslationsKeys::FORM_OPEN_NO_PERMISSION, [
+	public static function command_tell_message_sent(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_TELL_MESSAGE_SENT, [
 			0 => $param0,
+			1 => $param1,
 		]);
-	}
-
-	public static function form_title() : Translatable{
-		return new Translatable(KnownTranslationsKeys::FORM_TITLE, []);
 	}
 
 	public static function language_name() : Translatable{
 		return new Translatable(KnownTranslationsKeys::LANGUAGE_NAME, []);
+	}
+
+	public static function player_not_found(Translatable|string $param0) : Translatable{
+		return new Translatable(KnownTranslationsKeys::PLAYER_NOT_FOUND, [
+			0 => $param0,
+		]);
 	}
 
 	public static function plugin_invalid_plugin_file(Translatable|string $param0) : Translatable{

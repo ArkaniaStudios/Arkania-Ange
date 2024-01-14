@@ -64,11 +64,11 @@ class DataConnectorImpl implements DataConnector {
     private function executeImplRaw(string $query, int $mode, array $params) : PromiseInterface {
         $queryId = $this->queryId++;
         $def = new Deferred();
-        $this->handlers[$queryId] = function(bool $error, array $rows = []) use ($def) : void{
-            if($error === true){
-                $def->reject(new SqlError(SqlError::STAGE_EXECUTE, "Query failed"));
+        $this->handlers[$queryId] = function($results) use ($def) : void{
+            if($results instanceof SqlError){
+                $def->reject($results);
             }else{
-                $def->resolve($rows[0]);
+                $def->resolve($results[0]);
             }
         };
         $this->thread->addQuery($queryId, $mode, $query, $params);

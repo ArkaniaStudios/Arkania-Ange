@@ -16,10 +16,13 @@ declare(strict_types=1);
 
 namespace arkania\lang;
 final class KnownTranslationsKeys{
-	public const FORM_BUTTON_NO_PERMISSION = "form.button.no.permission";
-	public const FORM_OPEN_NO_PERMISSION = "form.open.no.permission";
-	public const FORM_TITLE = "form.title";
+	public const COMMAND_REPLY_DESCRIPTION = "command.reply.description";
+	public const COMMAND_REPLY_NO_PLAYER = "command.reply.no.player";
+	public const COMMAND_TELL_DESCRIPTION = "command.tell.description";
+	public const COMMAND_TELL_MESSAGE_RECEIVED = "command.tell.message.received";
+	public const COMMAND_TELL_MESSAGE_SENT = "command.tell.message.sent";
 	public const LANGUAGE_NAME = "language.name";
+	public const PLAYER_NOT_FOUND = "player.not.found";
 	public const PLUGIN_INVALID_PLUGIN_FILE = "plugin.invalid.plugin.file";
 	public const PLUGIN_LOAD_ERROR = "plugin.load.error";
 	public const PLUGIN_SERVER_CLOSED = "plugin.server.closed";

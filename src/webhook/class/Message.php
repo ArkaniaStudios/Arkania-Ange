@@ -6,8 +6,7 @@ namespace arkania\webhook\class;
 use JsonSerializable;
 
 final class Message implements JsonSerializable {
-
-    private array $data;
+    private array $data = [];
 
 
     public function setContent(string $content) : void {

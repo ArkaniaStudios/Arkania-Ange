@@ -71,6 +71,10 @@ class LanguageManager implements NotOtherInstanceInterface{
         return $this->languages[self::parseLanguageName($this->engine->getConfig()->get('console-language'))];
     }
 
+    public function getDefaultLanguage() : Language {
+        return $this->languages[self::parseLanguageName($this->engine->getConfig()->get('default-language'))];
+    }
+
     public static function parseLanguageName(string $lang) : string {
         return match($lang) {
             'english' => 'English',

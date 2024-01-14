@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace arkania\plugins;
 
+use arkania\commands\CommandCache;
 use arkania\Engine;
 use AttachableLogger;
 use pocketmine\plugin\ResourceProvider;
@@ -81,6 +82,10 @@ abstract class EnginePluginBase implements EnginePlugin {
 
     final public function getName() : string {
         return $this->informations->getName();
+    }
+
+    final public function getCommandCache() : CommandCache {
+        return $this->engine->getCommandCache();
     }
 
     final public function onEnableStateChange(bool $enabled) : void {
