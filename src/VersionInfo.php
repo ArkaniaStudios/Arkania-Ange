@@ -9,7 +9,7 @@ use pocketmine\utils\VersionString;
 
 final class VersionInfo {
     public const NAME = "ArkaniaStudios-Ange";
-    public const BASE_VERSION = "0.0.1";
+    public const BASE_VERSION = "0.0.1-beta";
     public const IS_DEVELOPMENT_BUILD = true;
     public const BUILD_CHANNEL = "stable";
 
