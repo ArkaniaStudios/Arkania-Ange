@@ -1,0 +1,14 @@
+language.name=Français
+
+;Plugin
+plugin.invalid.plugin.file=Le fichier {%0} du plugin est invalide.
+plugin.load.error=Erreur lors du chargement des plugins.
+plugin.server.closed=§cArrêt du serveur...
+
+player.not.found=§cLe joueur {%0} n'a pas été trouvé.
+
+command.reply.description=Répondre à un message privé.
+command.reply.no.player=§cVous n'avez personne à qui répondre.
+command.tell.description=Envoyer un message privé à un joueur.
+command.tell.message.sent=§7[§6Moi §7-> §e{%0}§7] §f{%1}
+command.tell.message.received=§7[§e{%0} §7-> §6Moi§7] §f{%1}
