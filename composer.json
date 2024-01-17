@@ -11,7 +11,8 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.45",
-        "shockedplot7560/unit-test": "^1.2"
+        "shockedplot7560/unit-test": "^1.2",
+        "phpunit/phpunit": "^10.5"
     },
     "license": "MIT",
     "autoload": {

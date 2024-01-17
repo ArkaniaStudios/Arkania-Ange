@@ -5,11 +5,11 @@ namespace arkania\listener;
 
 use arkania\events\EngineListener;
 use arkania\player\Session;
-use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 
-class PlayerLoginListener implements EngineListener {
+class PlayerJoinListener implements EngineListener {
 
-    public function onPlayerLogin(PlayerLoginEvent $event) : void {
+    public function onPlayerJoin(PlayerJoinEvent $event) : void {
         Session::create($event->getPlayer());
     }
 

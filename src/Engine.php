@@ -11,7 +11,7 @@ use arkania\database\DataBaseManager;
 use arkania\events\ListenerManager;
 use arkania\lang\Language;
 use arkania\lang\LanguageManager;
-use arkania\listener\PlayerLoginListener;
+use arkania\listener\PlayerJoinListener;
 use arkania\network\server\EngineServer;
 use arkania\network\server\ServerInterface;
 use arkania\network\server\ServerManager;
@@ -99,7 +99,7 @@ class Engine extends PluginBase {
         );
 
         $this->getListenerManager()->registerListeners(
-            new PlayerLoginListener()
+            new PlayerJoinListener()
         );
 
         $this->serverLoader->enableEnginePlugins();

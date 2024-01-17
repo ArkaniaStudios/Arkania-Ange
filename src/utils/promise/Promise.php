@@ -237,7 +237,7 @@ final class Promise implements PromiseInterface {
                 // still execute its resolving logic and still clear this
                 // reference when settling the promise. This helps
                 // garbage cycles if any callback creates an Exception.
-                // These assumptions are covered by the test suite, so if you ever feel like
+                // These assumptions are covered by the tests suite, so if you ever feel like
                 // refactoring this, go ahead, any alternative suggestions are welcome!
                 $target =& $this;
 
