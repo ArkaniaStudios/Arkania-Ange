@@ -7,6 +7,8 @@ plugin.server.closed=§cArrêt du serveur...
 
 player.not.found=§cLe joueur {%0} n'a pas été trouvé.
 
+form.cant.use.button=§cVous ne pouvez pas utiliser ce bouton.
+
 command.reply.description=Répondre à un message privé.
 command.reply.no.player=§cVous n'avez personne à qui répondre.
 command.tell.description=Envoyer un message privé à un joueur.

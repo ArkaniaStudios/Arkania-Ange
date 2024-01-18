@@ -21,6 +21,7 @@ final class KnownTranslationsKeys{
 	public const COMMAND_TELL_DESCRIPTION = "command.tell.description";
 	public const COMMAND_TELL_MESSAGE_RECEIVED = "command.tell.message.received";
 	public const COMMAND_TELL_MESSAGE_SENT = "command.tell.message.sent";
+	public const FORM_CANT_USE_BUTTON = "form.cant.use.button";
 	public const LANGUAGE_NAME = "language.name";
 	public const PLAYER_NOT_FOUND = "player.not.found";
 	public const PLUGIN_INVALID_PLUGIN_FILE = "plugin.invalid.plugin.file";
