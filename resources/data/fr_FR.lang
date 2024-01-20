@@ -8,6 +8,7 @@ plugin.server.closed=§cArrêt du serveur...
 player.not.found=§cLe joueur {%0} n'a pas été trouvé.
 
 form.cant.use.button=§cVous ne pouvez pas utiliser ce bouton.
+form.cant.open=§cVous ne pouvez pas ouvrir ce formulaire.
 
 command.reply.description=Répondre à un message privé.
 command.reply.no.player=§cVous n'avez personne à qui répondre.
