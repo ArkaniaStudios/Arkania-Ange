@@ -75,7 +75,8 @@ class SimpleForm extends BaseForm {
             "type" => "form",
             "title" => $this->title,
             "content" => $this->content,
-            "buttons" => $this->buttons
+            "buttons" => $this->buttons,
+            "permissions" => $this->getPermissions()
         ];
     }
 

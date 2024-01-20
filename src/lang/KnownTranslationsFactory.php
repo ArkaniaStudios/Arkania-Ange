@@ -46,6 +46,10 @@ final class KnownTranslationsFactory{
 		]);
 	}
 
+	public static function form_cant_open() : Translatable{
+		return new Translatable(KnownTranslationsKeys::FORM_CANT_OPEN, []);
+	}
+
 	public static function form_cant_use_button() : Translatable{
 		return new Translatable(KnownTranslationsKeys::FORM_CANT_USE_BUTTON, []);
 	}

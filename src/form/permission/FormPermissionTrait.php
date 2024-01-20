@@ -13,7 +13,7 @@ trait FormPermissionTrait {
         Player $player
     ) {}
 
-    public function getPermissions(): string {
+    public function getPermissions(): ?string {
         return $this->permissions;
     }
 
