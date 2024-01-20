@@ -9,9 +9,12 @@ use arkania\commands\default\TellCommand;
 use arkania\commands\listener\CommandDataListener;
 use arkania\database\DataBaseManager;
 use arkania\events\ListenerManager;
+use arkania\item\ItemManager;
+use arkania\item\listener\DataPacketSendListener;
 use arkania\lang\Language;
 use arkania\lang\LanguageManager;
 use arkania\listener\PlayerJoinListener;
+use arkania\listener\PlayerReceiveFormListener;
 use arkania\network\server\EngineServer;
 use arkania\network\server\ServerInterface;
 use arkania\network\server\ServerManager;
@@ -49,6 +52,7 @@ class Engine extends PluginBase {
     private WebhookManager $webhookManager;
     private ServerManager $serverManager;
     private CommandCache $commandCache;
+    private ItemManager $itemManager;
 
     /**
      * @throws BadExtensionException
@@ -61,7 +65,7 @@ class Engine extends PluginBase {
 
         $this->saveResource("config.yml", true);
         $this->pluginPath = Path::join($this->getServer()->getDataPath(), 'engine-plugins');
-        $this->dataBaseManager = new DataBaseManager($this);
+        //$this->dataBaseManager = new DataBaseManager($this);
         $this->languageManager = new LanguageManager($this);
         $this->serverLoader = new ServerLoader($this, $this->getServer());
         $this->permissionManager = new PermissionsManager();
@@ -69,6 +73,7 @@ class Engine extends PluginBase {
         $this->webhookManager = new WebhookManager($this);
         $this->serverManager = new ServerManager();
         $this->commandCache = new CommandCache($this);
+        $this->itemManager = new ItemManager();
 
         $this->getServerManager()->addServer(
             new EngineServer(
@@ -99,7 +104,9 @@ class Engine extends PluginBase {
         );
 
         $this->getListenerManager()->registerListeners(
-            new PlayerJoinListener()
+            new PlayerJoinListener(),
+            new PlayerReceiveFormListener(),
+            new DataPacketSendListener()
         );
 
         $this->serverLoader->enableEnginePlugins();
@@ -124,7 +131,7 @@ class Engine extends PluginBase {
     }
 
     protected function onDisable() : void {
-        $this->getServerManager()->getServer(ServersIds::getIdWithPort($this->getServer()->getPort()))->setStatus(ServerInterface::STATUS_OFFLINE);
+        //$this->getServerManager()->getServer(ServersIds::getIdWithPort($this->getServer()->getPort()))->setStatus(ServerInterface::STATUS_OFFLINE);
 
        $this->serverLoader->disableEnginePlugins();
     }
@@ -171,6 +178,10 @@ class Engine extends PluginBase {
 
     public function getCommandCache() : CommandCache {
         return $this->commandCache;
+    }
+
+    public function getItemManager() : ItemManager {
+        return $this->itemManager;
     }
 
 }
