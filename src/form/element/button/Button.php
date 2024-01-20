@@ -14,13 +14,13 @@ class Button implements JsonSerializable {
 
     private string $name;
     private Translatable|string $text;
-    private IconUrl $icon;
+    private ?IconUrl $icon;
 
     public function __construct(
         string $name,
         Translatable|string $text,
         string $permission = null,
-        IconUrl $icon = null
+        ?IconUrl $icon = null
     ) {
         $this->name = $name;
         $this->text = $this->translate($text);
@@ -40,7 +40,7 @@ class Button implements JsonSerializable {
     public function jsonSerialize() : array {
         return [
             'text' => $this->text,
-            'image' => $this->icon->jsonSerialize() ?? null
+            'image' => $this->icon?->jsonSerialize() ?? null
         ];
     }
 
