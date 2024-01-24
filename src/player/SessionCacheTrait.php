@@ -81,8 +81,18 @@ trait SessionCacheTrait {
                 }
             });
         });
-        self::syncAvailableCommands($player);
-        self::get($player);
+
+        Engine::getInstance()->getDataBaseManager()->getConnector()->executeSelect(
+            'SELECT * FROM players WHERE uuid = ?',
+            [
+                $player->getUniqueId()->__toString()
+            ]
+        )->then(function(SqlSelectResult $result) use ($player) : void {
+            $session = self::get($player);
+            if(count($result->getRows()) <= 0) return;
+            $session->setLanguage($result->getRows()[0]['language']);
+            self::syncAvailableCommands($player);
+        });
     }
 
 }
