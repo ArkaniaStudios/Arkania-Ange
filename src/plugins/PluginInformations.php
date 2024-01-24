@@ -123,5 +123,9 @@ class PluginInformations {
     public function getMap() : array {
         return $this->map;
     }
+    public function getFullName() : string {
+        return $this->name . " v" . $this->version;
+    }
+
 
 }
