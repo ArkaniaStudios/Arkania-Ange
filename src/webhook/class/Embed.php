@@ -13,7 +13,7 @@ final class Embed {
     }
 
     public function setTitle(string $title) : self {
-        $this->data['title'] = $title;
+        $this->data['title'] = strtoupper($title);
         return $this;
     }
 
