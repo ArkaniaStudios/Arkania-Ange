@@ -29,6 +29,7 @@ class LanguageManager implements NotOtherInstanceInterface{
             mkdir(Path::join($engine->getDataFolder(), 'data'));
         }
         $engine->saveResource(Path::join('data', 'fr_FR.lang'), true);
+        $engine->saveResource(Path::join('data', 'en_US.lang'), true);
 
         $this->register(
             new Language(
@@ -37,6 +38,15 @@ class LanguageManager implements NotOtherInstanceInterface{
                 Path::join($engine->getDataFolder(), 'data'),
                 Path::join(dirname(__DIR__, 2), 'vendor', 'pocketmine', 'locale-data'),
                 'fra.ini'
+            )
+        );
+        $this->register(
+            new Language(
+                'English',
+                'en_US.lang',
+                Path::join($engine->getDataFolder(), 'data'),
+                Path::join(dirname(__DIR__, 2), 'vendor', 'pocketmine', 'locale-data'),
+                'eng.ini'
             )
         );
         $this->engine = $engine;

@@ -20,6 +20,27 @@ namespace arkania\lang;
 use pocketmine\lang\Translatable;
 
 final class KnownTranslationsFactory{
+	public static function command_language_changed(Translatable|string $param0) : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_LANGUAGE_CHANGED, [
+			0 => $param0,
+		]);
+	}
+
+	public static function command_language_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_LANGUAGE_DESCRIPTION, []);
+	}
+
+	public static function command_plugin_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_PLUGIN_DESCRIPTION, []);
+	}
+
+	public static function command_plugin_list(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_PLUGIN_LIST, [
+			0 => $param0,
+			1 => $param1,
+		]);
+	}
+
 	public static function command_reply_description() : Translatable{
 		return new Translatable(KnownTranslationsKeys::COMMAND_REPLY_DESCRIPTION, []);
 	}
@@ -43,6 +64,20 @@ final class KnownTranslationsFactory{
 		return new Translatable(KnownTranslationsKeys::COMMAND_TELL_MESSAGE_SENT, [
 			0 => $param0,
 			1 => $param1,
+		]);
+	}
+
+	public static function command_version_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_VERSION_DESCRIPTION, []);
+	}
+
+	public static function command_version_message(Translatable|string $param0, Translatable|string $param1, Translatable|string $param2, Translatable|string $param3, Translatable|string $param4) : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_VERSION_MESSAGE, [
+			0 => $param0,
+			1 => $param1,
+			2 => $param2,
+			3 => $param3,
+			4 => $param4,
 		]);
 	}
 
