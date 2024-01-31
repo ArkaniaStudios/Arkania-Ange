@@ -30,6 +30,26 @@ final class KnownTranslationsFactory{
 		return new Translatable(KnownTranslationsKeys::COMMAND_LANGUAGE_DESCRIPTION, []);
 	}
 
+	public static function command_maintenance_already_off() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ALREADY_OFF, []);
+	}
+
+	public static function command_maintenance_already_on() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ALREADY_ON, []);
+	}
+
+	public static function command_maintenance_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_DESCRIPTION, []);
+	}
+
+	public static function command_maintenance_error() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ERROR, []);
+	}
+
+	public static function command_maintenance_on() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ON, []);
+	}
+
 	public static function command_plugin_description() : Translatable{
 		return new Translatable(KnownTranslationsKeys::COMMAND_PLUGIN_DESCRIPTION, []);
 	}

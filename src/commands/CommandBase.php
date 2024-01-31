@@ -29,9 +29,9 @@ abstract class CommandBase  extends Command {
         parent::__construct($name, $description, $usageMessage, $aliases);
         foreach ($this->getCommandParameter() as $position => $parameter) {
             $this->addParameter($position, $parameter);
-            foreach ($subCommands as $subCommand){
-                $this->subCommands[$subCommand->getName()] = $subCommand;
-            }
+        }
+        foreach ($subCommands as $subCommand){
+            $this->subCommands[$subCommand->getName()] = $subCommand;
         }
     }
 

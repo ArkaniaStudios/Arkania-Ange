@@ -4,8 +4,12 @@ declare(strict_types=1);
 namespace arkania;
 
 use arkania\commands\CommandCache;
+use arkania\commands\default\LanguageCommand;
+use arkania\commands\default\MaintenanceCommand;
+use arkania\commands\default\PluginCommand;
 use arkania\commands\default\ReplyCommand;
 use arkania\commands\default\TellCommand;
+use arkania\commands\default\VersionCommand;
 use arkania\commands\listener\CommandDataListener;
 use arkania\database\DataBaseManager;
 use arkania\events\ListenerManager;
@@ -13,15 +17,19 @@ use arkania\item\ItemManager;
 use arkania\item\listener\DataPacketSendListener;
 use arkania\lang\Language;
 use arkania\lang\LanguageManager;
+use arkania\listener\PlayerChangeLanguageListener;
 use arkania\listener\PlayerJoinListener;
 use arkania\listener\PlayerReceiveFormListener;
 use arkania\network\server\EngineServer;
 use arkania\network\server\ServerInterface;
 use arkania\network\server\ServerManager;
 use arkania\network\server\ServersIds;
+use arkania\packs\ResourcePackManager;
+use arkania\player\permissions\MissingPermissionException;
 use arkania\player\permissions\PermissionsBase;
 use arkania\player\permissions\PermissionsManager;
 use arkania\plugins\ServerLoader;
+use arkania\rank\RankManager;
 use arkania\utils\AlreadyInstantiatedException;
 use arkania\utils\BadExtensionException;
 use arkania\webhook\AlreadyRegisteredException;
@@ -53,6 +61,8 @@ class Engine extends PluginBase {
     private ServerManager $serverManager;
     private CommandCache $commandCache;
     private ItemManager $itemManager;
+    private ResourcePackManager $resourcePackManager;
+    private RankManager $rankManager;
 
     /**
      * @throws BadExtensionException
@@ -65,7 +75,7 @@ class Engine extends PluginBase {
 
         $this->saveResource("config.yml", true);
         $this->pluginPath = Path::join($this->getServer()->getDataPath(), 'engine-plugins');
-        //$this->dataBaseManager = new DataBaseManager($this);
+        $this->dataBaseManager = new DataBaseManager($this);
         $this->languageManager = new LanguageManager($this);
         $this->serverLoader = new ServerLoader($this, $this->getServer());
         $this->permissionManager = new PermissionsManager();
@@ -74,6 +84,8 @@ class Engine extends PluginBase {
         $this->serverManager = new ServerManager();
         $this->commandCache = new CommandCache($this);
         $this->itemManager = new ItemManager();
+        //$this->resourcePackManager = new ResourcePackManager($this);
+        $this->rankManager = new RankManager($this);
 
         $this->getServerManager()->addServer(
             new EngineServer(
@@ -89,6 +101,9 @@ class Engine extends PluginBase {
         $this->serverLoader->loadEnginePlugins();
     }
 
+    /**
+     * @throws MissingPermissionException
+     */
     protected function onEnable() : void {
         $this->permissionManager->registerEnumPermission(PermissionsBase::cases());
 
@@ -99,14 +114,19 @@ class Engine extends PluginBase {
         );
 
         $this->getCommandCache()->registerCommands(
+            new LanguageCommand(),
+            new MaintenanceCommand($this),
+            new PluginCommand(),
+            new ReplyCommand(),
             new TellCommand(),
-            new ReplyCommand()
+            new VersionCommand(),
         );
 
         $this->getListenerManager()->registerListeners(
             new PlayerJoinListener(),
             new PlayerReceiveFormListener(),
-            new DataPacketSendListener()
+            new DataPacketSendListener(),
+            new PlayerChangeLanguageListener()
         );
 
         $this->serverLoader->enableEnginePlugins();
@@ -127,13 +147,28 @@ class Engine extends PluginBase {
             );
         }
 
+        //$this->getResourcePackManager()->loadResourcePack();
+
         new CommandDataListener($this);
     }
 
     protected function onDisable() : void {
-        //$this->getServerManager()->getServer(ServersIds::getIdWithPort($this->getServer()->getPort()))->setStatus(ServerInterface::STATUS_OFFLINE);
+        $this->getServerManager()->getServer(
+            ServersIds::getIdWithPort(
+                $this->getServer()->getPort()
+            )
+        )->setStatus(ServerInterface::STATUS_OFFLINE);
 
        $this->serverLoader->disableEnginePlugins();
+    }
+
+    final public function getEngineFile() : string {
+        return Path::join(
+            $this->getServer()->getPluginPath(),
+            'Arkania-ANGE',
+            'src',
+            'arkania'
+        );
     }
 
     public function getPluginPath() : string {
@@ -142,6 +177,10 @@ class Engine extends PluginBase {
 
     public function getApiVersion() : string {
         return VersionInfo::BASE_VERSION;
+    }
+
+    public function getServerName() : string {
+        return $this->getConfig()->get('server-name');
     }
 
     public function getLanguageManager() : LanguageManager {
@@ -182,6 +221,14 @@ class Engine extends PluginBase {
 
     public function getItemManager() : ItemManager {
         return $this->itemManager;
+    }
+
+    public function getResourcePackManager() : ResourcePackManager {
+        return $this->resourcePackManager;
+    }
+
+    public function getRankManager() : RankManager {
+        return $this->rankManager;
     }
 
 }

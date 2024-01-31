@@ -6,6 +6,7 @@ namespace arkania\player;
 use arkania\Engine;
 use arkania\lang\event\PlayerChangeLanguageEvent;
 use arkania\lang\Language;
+use arkania\utils\promise\PromiseInterface;
 use pocketmine\lang\Translatable;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
@@ -106,6 +107,15 @@ class Session {
         }
 
         $player->getNetworkSession()->sendDataPacket(AvailableCommandsPacket::create($commandData, [], [], []));
+    }
+
+    public function getPermissions() : PromiseInterface {
+        return Engine::getInstance()->getDataBaseManager()->getConnector()->executeSelect(
+            'SELECT permissions FROM players WHERE uuid = ?',
+            [
+                $this->networkSession->getPlayer()->getUniqueId()->__toString()
+            ]
+        );
     }
 
 }

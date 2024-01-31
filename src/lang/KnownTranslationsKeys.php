@@ -18,6 +18,11 @@ namespace arkania\lang;
 final class KnownTranslationsKeys{
 	public const COMMAND_LANGUAGE_CHANGED = "command.language.changed";
 	public const COMMAND_LANGUAGE_DESCRIPTION = "command.language.description";
+	public const COMMAND_MAINTENANCE_ALREADY_OFF = "command.maintenance.already.off";
+	public const COMMAND_MAINTENANCE_ALREADY_ON = "command.maintenance.already.on";
+	public const COMMAND_MAINTENANCE_DESCRIPTION = "command.maintenance.description";
+	public const COMMAND_MAINTENANCE_ERROR = "command.maintenance.error";
+	public const COMMAND_MAINTENANCE_ON = "command.maintenance.on";
 	public const COMMAND_PLUGIN_DESCRIPTION = "command.plugin.description";
 	public const COMMAND_PLUGIN_LIST = "command.plugin.list";
 	public const COMMAND_REPLY_DESCRIPTION = "command.reply.description";
