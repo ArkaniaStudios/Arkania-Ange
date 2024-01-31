@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace arkania\player;
 
 use arkania\Engine;
+use arkania\lang\event\PlayerChangeLanguageEvent;
 use arkania\lang\Language;
+use arkania\utils\promise\PromiseInterface;
 use pocketmine\lang\Translatable;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
@@ -32,6 +34,14 @@ class Session {
     }
 
     public function setLanguage(Language $language) : void {
+        $ev = new PlayerChangeLanguageEvent(
+            $this->networkSession->getPlayer(),
+            $language
+        );
+        $ev->call();
+        if($ev->isCancelled()) {
+            return;
+        }
         Engine::getInstance()->getDataBaseManager()->getConnector()->executeGeneric(
             'UPDATE players SET language = ? WHERE uuid = ?',
             [
@@ -61,7 +71,7 @@ class Session {
         $this->lastPlayerMessage = $message;
     }
 
-    protected static function syncAvailableCommands(Player $player) : void{
+    public static function syncAvailableCommands(Player $player) : void{
         $playerSession = self::get($player);
         $commandData = [];
         foreach(Server::getInstance()->getCommandMap()->getCommands() as $name => $command){
@@ -97,6 +107,15 @@ class Session {
         }
 
         $player->getNetworkSession()->sendDataPacket(AvailableCommandsPacket::create($commandData, [], [], []));
+    }
+
+    public function getPermissions() : PromiseInterface {
+        return Engine::getInstance()->getDataBaseManager()->getConnector()->executeSelect(
+            'SELECT permissions FROM players WHERE uuid = ?',
+            [
+                $this->networkSession->getPlayer()->getUniqueId()->__toString()
+            ]
+        );
     }
 
 }

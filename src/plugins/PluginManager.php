@@ -20,10 +20,7 @@ use ReflectionException;
 use RuntimeException;
 use Symfony\Component\Filesystem\Path;
 
-class PluginManager implements NotOtherInstanceInterface {
-    use NotOtherInstanceTrait {
-        __construct as private __notOtherInstanceConstruct;
-    }
+class PluginManager {
 
     private Engine $engine;
     private Server $server;
@@ -38,7 +35,6 @@ class PluginManager implements NotOtherInstanceInterface {
         Engine $engine,
         Server $server
     ) {
-        $this->__notOtherInstanceConstruct();
         if(!file_exists($engine->getPluginPath())) {
             mkdir($engine->getPluginPath());
         }
@@ -360,7 +356,7 @@ class PluginManager implements NotOtherInstanceInterface {
         }
     }
 
-    private function disablePlugin(EnginePlugin $plugin) : void {
+    public function disablePlugin(EnginePlugin $plugin) : void {
         if($plugin->isEnabled()) {
             $this->engine->getLogger()->info(
                 $this->engine->getLanguage()->translate(

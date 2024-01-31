@@ -20,6 +20,47 @@ namespace arkania\lang;
 use pocketmine\lang\Translatable;
 
 final class KnownTranslationsFactory{
+	public static function command_language_changed(Translatable|string $param0) : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_LANGUAGE_CHANGED, [
+			0 => $param0,
+		]);
+	}
+
+	public static function command_language_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_LANGUAGE_DESCRIPTION, []);
+	}
+
+	public static function command_maintenance_already_off() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ALREADY_OFF, []);
+	}
+
+	public static function command_maintenance_already_on() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ALREADY_ON, []);
+	}
+
+	public static function command_maintenance_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_DESCRIPTION, []);
+	}
+
+	public static function command_maintenance_error() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ERROR, []);
+	}
+
+	public static function command_maintenance_on() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ON, []);
+	}
+
+	public static function command_plugin_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_PLUGIN_DESCRIPTION, []);
+	}
+
+	public static function command_plugin_list(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_PLUGIN_LIST, [
+			0 => $param0,
+			1 => $param1,
+		]);
+	}
+
 	public static function command_reply_description() : Translatable{
 		return new Translatable(KnownTranslationsKeys::COMMAND_REPLY_DESCRIPTION, []);
 	}
@@ -44,6 +85,28 @@ final class KnownTranslationsFactory{
 			0 => $param0,
 			1 => $param1,
 		]);
+	}
+
+	public static function command_version_description() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_VERSION_DESCRIPTION, []);
+	}
+
+	public static function command_version_message(Translatable|string $param0, Translatable|string $param1, Translatable|string $param2, Translatable|string $param3, Translatable|string $param4) : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_VERSION_MESSAGE, [
+			0 => $param0,
+			1 => $param1,
+			2 => $param2,
+			3 => $param3,
+			4 => $param4,
+		]);
+	}
+
+	public static function form_cant_open() : Translatable{
+		return new Translatable(KnownTranslationsKeys::FORM_CANT_OPEN, []);
+	}
+
+	public static function form_cant_use_button() : Translatable{
+		return new Translatable(KnownTranslationsKeys::FORM_CANT_USE_BUTTON, []);
 	}
 
 	public static function language_name() : Translatable{

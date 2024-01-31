@@ -7,8 +7,23 @@ plugin.server.closed=§cArrêt du serveur...
 
 player.not.found=§cLe joueur {%0} n'a pas été trouvé.
 
+form.cant.use.button=§cVous ne pouvez pas utiliser ce bouton.
+form.cant.open=§cVous ne pouvez pas ouvrir ce formulaire.
+
+command.language.description=Changer votre langage.
+command.language.changed=§aVotre langage a été changé en §e{%0}§a.
+command.maintenance.description=Activer ou désactiver la maintenance.
+command.maintenance.error=§cErreur: Le serveur n'est pas enregistré dans la base de données.
+command.maintenance.already.on=§cLe serveur est déjà en maintenance.
+command.maintenance.already.off=§cLe serveur n'est pas en maintenance.
+command.maintenance.on=§aLe serveur est maintenant en maintenance.
+command.maintenance.disconnect=§cLe serveur est en maintenance.
+command.plugin.description=Voir la liste des plugins.
+command.plugin.list=§aPlugins ({%0}): §e{%1}
 command.reply.description=Répondre à un message privé.
 command.reply.no.player=§cVous n'avez personne à qui répondre.
 command.tell.description=Envoyer un message privé à un joueur.
 command.tell.message.sent=§7[§6Moi §7-> §e{%0}§7] §f{%1}
 command.tell.message.received=§7[§e{%0} §7-> §6Moi§7] §f{%1}
+command.version.description=Voir la version du serveur.
+command.version.message=Le serveur §6{%0} §futilise l'§6ANGE §7§o(§6Arkania Network Game Engine§7§o)\n§r- Version: §6{%1}\n§f- PHP: §6{%2}\n§f- Système: §6{%3}\n§f- MCBE Protocol: §6{%4}§7.

@@ -20,7 +20,7 @@ final class ServersIds {
         return self::$serversPort[$port] ?? throw new InvalidArgumentException("Invalid port $port you can use `addServer`");
     }
 
-    public static function getIdWithId(string $id) : int {
+    public static function getPortWithId(string $id) : int {
         return self::$serversIds[$id] ?? throw new InvalidArgumentException("Invalid server name $id you can use `addServer`");
     }
 
