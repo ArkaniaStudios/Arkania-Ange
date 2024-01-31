@@ -42,6 +42,10 @@ final class KnownTranslationsFactory{
 		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_DESCRIPTION, []);
 	}
 
+	public static function command_maintenance_disconnect() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_DISCONNECT, []);
+	}
+
 	public static function command_maintenance_error() : Translatable{
 		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ERROR, []);
 	}
@@ -131,6 +135,30 @@ final class KnownTranslationsFactory{
 
 	public static function plugin_server_closed() : Translatable{
 		return new Translatable(KnownTranslationsKeys::PLUGIN_SERVER_CLOSED, []);
+	}
+
+	public static function server_status_maintenance() : Translatable{
+		return new Translatable(KnownTranslationsKeys::SERVER_STATUS_MAINTENANCE, []);
+	}
+
+	public static function server_status_offline() : Translatable{
+		return new Translatable(KnownTranslationsKeys::SERVER_STATUS_OFFLINE, []);
+	}
+
+	public static function server_status_online() : Translatable{
+		return new Translatable(KnownTranslationsKeys::SERVER_STATUS_ONLINE, []);
+	}
+
+	public static function server_status_restarting() : Translatable{
+		return new Translatable(KnownTranslationsKeys::SERVER_STATUS_RESTARTING, []);
+	}
+
+	public static function server_status_starting() : Translatable{
+		return new Translatable(KnownTranslationsKeys::SERVER_STATUS_STARTING, []);
+	}
+
+	public static function server_status_unknown() : Translatable{
+		return new Translatable(KnownTranslationsKeys::SERVER_STATUS_UNKNOWN, []);
 	}
 
 }

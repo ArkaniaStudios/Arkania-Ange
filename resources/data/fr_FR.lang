@@ -5,6 +5,13 @@ plugin.invalid.plugin.file=Le fichier {%0} du plugin est invalide.
 plugin.load.error=Erreur lors du chargement des plugins.
 plugin.server.closed=§cArrêt du serveur...
 
+server.status.starting=§aDémarrage
+server.status.maintenance=§6Maintenance
+server.status.online=§aEn ligne
+server.status.offline=§cHors ligne
+server.status.restarting=§cRedémarrage
+server.status.unknown=§cInconnu
+
 player.not.found=§cLe joueur {%0} n'a pas été trouvé.
 
 form.cant.use.button=§cVous ne pouvez pas utiliser ce bouton.

@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace arkania\network\server;
 
 use arkania\Engine;
+use arkania\lang\KnownTranslationsFactory;
 use arkania\utils\promise\PromiseInterface;
+use pocketmine\lang\Translatable;
 
 final class EngineServer implements ServerInterface {
 
@@ -77,4 +79,16 @@ final class EngineServer implements ServerInterface {
             [$status, $this->id]
         );
     }
+
+    public static function statusToString(string $status) : Translatable {
+        return match ($status) {
+            self::STATUS_STARTING => KnownTranslationsFactory::server_status_starting(),
+            self::STATUS_ONLINE => KnownTranslationsFactory::server_status_online(),
+            self::STATUS_OFFLINE => KnownTranslationsFactory::server_status_offline(),
+            self::STATUS_RESTARTING => KnownTranslationsFactory::server_status_restarting(),
+            self::STATUS_WHITELIST => KnownTranslationsFactory::server_status_maintenance(),
+            default => KnownTranslationsFactory::server_status_unknown()
+        };
+    }
+
 }

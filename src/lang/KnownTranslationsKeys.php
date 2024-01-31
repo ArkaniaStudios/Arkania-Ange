@@ -21,6 +21,7 @@ final class KnownTranslationsKeys{
 	public const COMMAND_MAINTENANCE_ALREADY_OFF = "command.maintenance.already.off";
 	public const COMMAND_MAINTENANCE_ALREADY_ON = "command.maintenance.already.on";
 	public const COMMAND_MAINTENANCE_DESCRIPTION = "command.maintenance.description";
+	public const COMMAND_MAINTENANCE_DISCONNECT = "command.maintenance.disconnect";
 	public const COMMAND_MAINTENANCE_ERROR = "command.maintenance.error";
 	public const COMMAND_MAINTENANCE_ON = "command.maintenance.on";
 	public const COMMAND_PLUGIN_DESCRIPTION = "command.plugin.description";
@@ -39,4 +40,10 @@ final class KnownTranslationsKeys{
 	public const PLUGIN_INVALID_PLUGIN_FILE = "plugin.invalid.plugin.file";
 	public const PLUGIN_LOAD_ERROR = "plugin.load.error";
 	public const PLUGIN_SERVER_CLOSED = "plugin.server.closed";
+	public const SERVER_STATUS_MAINTENANCE = "server.status.maintenance";
+	public const SERVER_STATUS_OFFLINE = "server.status.offline";
+	public const SERVER_STATUS_ONLINE = "server.status.online";
+	public const SERVER_STATUS_RESTARTING = "server.status.restarting";
+	public const SERVER_STATUS_STARTING = "server.status.starting";
+	public const SERVER_STATUS_UNKNOWN = "server.status.unknown";
 }
