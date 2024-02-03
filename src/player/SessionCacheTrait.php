@@ -90,7 +90,7 @@ trait SessionCacheTrait {
         )->then(function(SqlSelectResult $result) use ($player) : void {
             $session = self::get($player);
             if(count($result->getRows()) <= 0) return;
-            $session->setLanguage($result->getRows()[0]['language']);
+            $session->setLanguage(Engine::getInstance()->getLanguageManager()->getLanguage($result->getRows()[0]['language']));
             self::syncAvailableCommands($player);
         });
     }

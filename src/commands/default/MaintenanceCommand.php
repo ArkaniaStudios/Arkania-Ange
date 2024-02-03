@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace arkania\commands\default;
 
 use arkania\commands\CommandBase;
+use arkania\commands\default\sub\MaintenanceOffSubCommand;
 use arkania\commands\default\sub\MaintenanceOnSubCommand;
 use arkania\Engine;
 use arkania\lang\KnownTranslationsFactory;
 use arkania\player\permissions\MissingPermissionException;
 use arkania\player\permissions\PermissionsBase;
-use BadMethodCallException;
 use pocketmine\command\CommandSender;
 
 class MaintenanceCommand extends CommandBase {
@@ -25,7 +25,8 @@ class MaintenanceCommand extends CommandBase {
             KnownTranslationsFactory::command_maintenance_description(),
             '/maintenance <on:off>',
             [
-                new MaintenanceOnSubCommand($engine)
+                new MaintenanceOnSubCommand($engine),
+                new MaintenanceOffSubCommand($engine)
             ]
         );
         $this->setPermission(PermissionsBase::getPermission('maintenance'));
@@ -36,7 +37,6 @@ class MaintenanceCommand extends CommandBase {
     }
 
     public function onRun(CommandSender $sender, array $parameters) : void {
-        throw new BadMethodCallException('Not implemented yet');
     }
 
 }

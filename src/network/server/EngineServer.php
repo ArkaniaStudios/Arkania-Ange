@@ -64,7 +64,7 @@ final class EngineServer implements ServerInterface {
 
     public function getStatus() : PromiseInterface {
         return $this->engine->getDataBaseManager()->getConnector()->executeSelect(
-            'SELECT status FROM servers WHERE id= ?',
+            'SELECT * FROM servers WHERE id= ?',
             [$this->id]
         );
     }

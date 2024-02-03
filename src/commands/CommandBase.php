@@ -40,35 +40,27 @@ abstract class CommandBase  extends Command {
 
     final public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
         $passArgs = [];
-        if(count($args) > 0){
-            if(count($this->parameters) > 0) {
-
-                if(count($args) !== count($this->parameters)) {
-                    $sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->getUsage()));
+        if (count($args) > 0) {
+            if (isset($this->subCommands[($label = $args[0])])) {
+                $cmd = $this->subCommands[$label];
+                if (!$cmd->testPermissionSilent($sender)) {
+                    $sender->sendMessage(KnownTranslationFactory::commands_generic_permission());
                     return;
                 }
-
-                if(isset($this->subCommands[($label = $args[0])])) {
-                    $cmd = $this->subCommands[$label];
-                    if(!$cmd->testPermissionSilent($sender)) {
-                        $sender->sendMessage(KnownTranslationFactory::commands_generic_permission());
-                        return;
-                    }
-                    $cmd->execute($sender, $commandLabel, array_slice($args, 1));
-                    return;
-                }
-                $passArgs = $this->parseArguments($args, $sender);
-            }else{
-                $sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->getUsage()));
+                $cmd->execute($sender, $commandLabel, array_slice($args, 1));
+                return;
             }
-        }elseif (count($this->parameters) > 0) {
-            $sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->getUsage()));
+            $passArgs = $this->parseArguments($args, $sender);
+        } elseif (!empty($this->parameters)) {
+            $sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->usageMessage ?? '/' . $this->getName()));
             return;
         }
-        try {
-            $this->onRun($sender, $passArgs);
-        }catch (InvalidCommandSyntaxException) {
-            $sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->getUsage()));
+        if ($passArgs !== null) {
+            try {
+                $this->onRun($sender, $passArgs);
+            } catch (InvalidCommandSyntaxException) {
+                $sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->usageMessage ?? '/' . $this->getName()));
+            }
         }
     }
 

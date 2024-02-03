@@ -12,6 +12,7 @@ use arkania\commands\default\TellCommand;
 use arkania\commands\default\VersionCommand;
 use arkania\commands\listener\CommandDataListener;
 use arkania\database\DataBaseManager;
+use arkania\database\result\SqlSelectResult;
 use arkania\events\ListenerManager;
 use arkania\item\ItemManager;
 use arkania\item\listener\DataPacketSendListener;
@@ -84,7 +85,7 @@ class Engine extends PluginBase {
         $this->serverManager = new ServerManager();
         $this->commandCache = new CommandCache($this);
         $this->itemManager = new ItemManager();
-        //$this->resourcePackManager = new ResourcePackManager($this);
+        $this->resourcePackManager = new ResourcePackManager($this);
         $this->rankManager = new RankManager($this);
 
         $this->getServerManager()->addServer(
@@ -147,17 +148,26 @@ class Engine extends PluginBase {
             );
         }
 
-        //$this->getResourcePackManager()->loadResourcePack();
+        $this->getResourcePackManager()->loadResourcePack();
 
         new CommandDataListener($this);
     }
 
     protected function onDisable() : void {
-        $this->getServerManager()->getServer(
+        $server = $this->getServerManager()->getServer(
             ServersIds::getIdWithPort(
                 $this->getServer()->getPort()
             )
-        )->setStatus(ServerInterface::STATUS_OFFLINE);
+        );
+        $server->getStatus()->then(function(SqlSelectResult $result) use ($server) {
+            if(count($result->getRows()) <= 0){
+                return;
+            }
+            if($result->getRows()[0]['status'] === ServerInterface::STATUS_WHITELIST){
+                return;
+            }
+            $server->setStatus(ServerInterface::STATUS_OFFLINE);
+        });
 
        $this->serverLoader->disableEnginePlugins();
     }
@@ -166,8 +176,7 @@ class Engine extends PluginBase {
         return Path::join(
             $this->getServer()->getPluginPath(),
             'Arkania-ANGE',
-            'src',
-            'arkania'
+            'src'
         );
     }
 

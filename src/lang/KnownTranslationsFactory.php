@@ -50,6 +50,14 @@ final class KnownTranslationsFactory{
 		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ERROR, []);
 	}
 
+	public static function command_maintenance_not() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_NOT, []);
+	}
+
+	public static function command_maintenance_off() : Translatable{
+		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_OFF, []);
+	}
+
 	public static function command_maintenance_on() : Translatable{
 		return new Translatable(KnownTranslationsKeys::COMMAND_MAINTENANCE_ON, []);
 	}

@@ -16,7 +16,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\Server;
 
-class MaintenanceOnSubCommand extends CommandBase {
+class MaintenanceOffSubCommand extends CommandBase {
 
     /**
      * @throws MissingPermissionException
@@ -25,7 +25,7 @@ class MaintenanceOnSubCommand extends CommandBase {
         private readonly Engine $engine
     ) {
         parent::__construct(
-            'on'
+            'off'
         );
         $this->setPermission(PermissionsBase::getPermission('maintenance'));
     }
@@ -52,23 +52,22 @@ class MaintenanceOnSubCommand extends CommandBase {
                     //wtf impossible
                     return;
                 }
-                if($result->getRows()[0]['status'] === ServerInterface::STATUS_WHITELIST) {
-                    $sender->sendMessage(KnownTranslationsFactory::command_maintenance_already_on());
+                if($result->getRows()[0]['status'] !== ServerInterface::STATUS_WHITELIST) {
+                    $sender->sendMessage(KnownTranslationsFactory::command_maintenance_not());
                     return;
                 }
 
                 $this->engine->getDataBaseManager()->getConnector()->executeChange(
                     'UPDATE servers SET status =? WHERE id = ?',
                     [
-                        ServerInterface::STATUS_WHITELIST,
+                        ServerInterface::STATUS_ONLINE,
                         $result->getRows()[0]['id']
                     ]
                 )->then(
-                    function () use ($sender) : void {
-                        foreach (Server::getInstance()->getOnlinePlayers() as $player) {
-                            $player->disconnect(Session::get($player)->getLanguage()->translate(KnownTranslationsFactory::command_maintenance_disconnect()));
+                    function () : void {
+                        foreach (Server::getInstance()->getOnlinePlayers() as $player){
+                            Session::get($player)->sendMessage(KnownTranslationsFactory::command_maintenance_off());
                         }
-                        $sender->sendMessage(KnownTranslationsFactory::command_maintenance_on());
                     }
                 );
             }

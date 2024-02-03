@@ -23,6 +23,8 @@ final class KnownTranslationsKeys{
 	public const COMMAND_MAINTENANCE_DESCRIPTION = "command.maintenance.description";
 	public const COMMAND_MAINTENANCE_DISCONNECT = "command.maintenance.disconnect";
 	public const COMMAND_MAINTENANCE_ERROR = "command.maintenance.error";
+	public const COMMAND_MAINTENANCE_NOT = "command.maintenance.not";
+	public const COMMAND_MAINTENANCE_OFF = "command.maintenance.off";
 	public const COMMAND_MAINTENANCE_ON = "command.maintenance.on";
 	public const COMMAND_PLUGIN_DESCRIPTION = "command.plugin.description";
 	public const COMMAND_PLUGIN_LIST = "command.plugin.list";

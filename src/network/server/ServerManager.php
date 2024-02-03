@@ -32,19 +32,33 @@ class ServerManager implements NotOtherInstanceInterface {
             'SELECT * FROM servers WHERE id = ?',
             [$server->getId()]
         )->then(function(SqlSelectResult $result) use ($server): void {
-            if(count($result->getRows()) === 0) {
+            if(count($result->getRows()) <= 0) {
                 $server->getEngine()->getDataBaseManager()->getConnector()->executeInsert(
                     'INSERT INTO servers (id, name, ip, port, status) VALUES (?, ?, ?, ?, ?)',
                     [$server->getId(), $server->getName(), $server->getIp(), $server->getPort(), ServerInterface::STATUS_ONLINE]
                 );
             }else{
-                $server->getEngine()->getDataBaseManager()->getConnector()->executeChange(
-                    'UPDATE servers SET name = ?, ip = ?, port = ?, status = ? WHERE id = ?',
-                    [$server->getName(), $server->getIp(), $server->getPort(), $server->getStringStatus(), $server->getId()]
-                );
+                $server->getStatus()->then(function(SqlSelectResult $result) use ($server): void {
+                    if(count($result->getRows()) <= 0) {
+                        return;
+                    }
+                    if($result->getRows()[0]['status'] === ServerInterface::STATUS_WHITELIST){
+                        $server->getEngine()->getDataBaseManager()->getConnector()->executeChange(
+                            'UPDATE servers SET name = ?, ip = ?, port = ? WHERE id = ?',
+                            [$server->getName(), $server->getIp(), $server->getPort(), $server->getId()]
+                        );
+                        $server->setStatus(ServerInterface::STATUS_WHITELIST);
+                        $this->servers[$server->getId()] = $server;
+                        return;
+                    }
+                    $server->getEngine()->getDataBaseManager()->getConnector()->executeChange(
+                        'UPDATE servers SET name = ?, ip = ?, port = ?, status = ? WHERE id = ?',
+                        [$server->getName(), $server->getIp(), $server->getPort(), $server->getStringStatus(), $server->getId()]
+                    );
+                });
             }
+            $this->servers[$server->getId()] = $server;
         });
-        $this->servers[$server->getId()] = $server;
     }
 
     public function getServer(int $id) : ?ServerInterface {
