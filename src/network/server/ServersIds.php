@@ -11,13 +11,20 @@ final class ServersIds {
 
     private static array $serversIds = [];
 
-    public static function addServer(int $port, int $serverId) : void {
+    private static array $serversName = [];
+
+    public static function addServer(int $port, int $serverId, string $name) : void {
         self::$serversPort[$port] = $serverId;
         self::$serversIds[$serverId] = $port;
+        self::$serversName[$name] = $serverId;
     }
 
     public static function getIdWithPort(int $port) : int {
         return self::$serversPort[$port] ?? throw new InvalidArgumentException("Invalid port $port you can use `addServer`");
+    }
+
+    public static function getServerWithName(string $name) : int {
+        return self::$serversName[$name] ?? throw new InvalidArgumentException("Invalid server name $name you can use `addServer`");
     }
 
     public static function getPortWithId(string $id) : int {

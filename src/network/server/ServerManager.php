@@ -27,7 +27,7 @@ class ServerManager implements NotOtherInstanceInterface {
         if(isset($this->servers[$server->getId()])){
             throw new AlreadyRegisteredException('Server with id ' . $server->getId() . ' is already registered');
         }
-        ServersIds::addServer($server->getPort(), $server->getId());
+        ServersIds::addServer($server->getPort(), $server->getId(), $server->getName());
         $server->getEngine()->getDataBaseManager()->getConnector()->executeSelect(
             'SELECT * FROM servers WHERE id = ?',
             [$server->getId()]
