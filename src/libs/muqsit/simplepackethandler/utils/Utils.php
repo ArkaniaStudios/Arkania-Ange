@@ -22,13 +22,18 @@ declare(strict_types=1);
 
 namespace arkania\libs\muqsit\simplepackethandler\utils;
 
+use arkania\npc\base\CustomEntity;
+use arkania\npc\base\SimpleEntity;
+use arkania\utils\Loader;
 use Closure;
 use InvalidArgumentException;
+use pocketmine\entity\Location;
 use ReflectionFunction;
 use ReflectionNamedType;
 use function count;
 use function implode;
 use function is_a;
+use function strtolower;
 
 final class Utils {
 	/**
@@ -64,4 +69,13 @@ final class Utils {
 
 		throw new InvalidArgumentException("Closure must satisfy signature (" . implode(", ", $params) . ") : {$return_type}");
 	}
+
+	public static function getEntityById(Location $location, int|string $id) : null|CustomEntity|SimpleEntity {
+		if(!isset(Loader::$entities[strtolower($id)])) {
+			return null;
+		}
+		return new Loader::$entities[strtolower($id)]($location);
+
+	}
+
 }

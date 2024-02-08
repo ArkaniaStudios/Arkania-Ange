@@ -20,40 +20,21 @@
 
 declare(strict_types=1);
 
-namespace arkania\form\element\elements;
+namespace arkania\npc;
 
-class Input extends Element {
-	private string $text;
-	private ?string $placeholder;
-	private ?string $default;
+use arkania\npc\utils\EntityRegistry;
 
-	public function __construct(
-		string $name,
-		string $text = '',
-		?string $placeholder = null,
-		?string $default = null
-	) {
-		parent::__construct($name);
-		$this->text        = $text;
-		$this->placeholder = $placeholder;
-		$this->default     = $default;
+class EntityManager {
+	private static ?EntityRegistry $registry = null;
+
+	private static ?string $fallbackEntity = null;
+
+	public static function getEntityRegistry() : EntityRegistry {
+		return self::$registry ??= new EntityRegistry();
 	}
 
-	public function getType() : string {
-		return 'input';
-	}
-
-	public function handler($data) : bool|int|string {
-		return $data;
-	}
-
-	public function jsonSerialize() : array {
-		return [
-			'type'        => $this->getType(),
-			'text'        => $this->text,
-			'placeholder' => $this->placeholder,
-			'default'     => $this->default
-		];
+	public static function getFallbackEntity() : ?string {
+		return self::$fallbackEntity;
 	}
 
 }

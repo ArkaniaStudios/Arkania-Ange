@@ -20,40 +20,33 @@
 
 declare(strict_types=1);
 
-namespace arkania\form\element\elements;
+/**
+ *     _      ____    _  __     _      _   _   ___      _             __     __  ____
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \            \ \   / / |___ \
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \    _____   \ \ / /    __) |
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \  |_____|   \ V /    / __/
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\            \_/    |_____|
+ *
+ * @author: Julien
+ * @link: https://github.com/ArkaniaStudios
+ */
 
-class Input extends Element {
-	private string $text;
-	private ?string $placeholder;
-	private ?string $default;
+namespace arkania\npc\type\agressives;
 
-	public function __construct(
-		string $name,
-		string $text = '',
-		?string $placeholder = null,
-		?string $default = null
-	) {
-		parent::__construct($name);
-		$this->text        = $text;
-		$this->placeholder = $placeholder;
-		$this->default     = $default;
+use arkania\npc\base\SimpleEntity;
+use pocketmine\entity\EntitySizeInfo;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+
+class Phantom extends SimpleEntity {
+	protected function getInitialSizeInfo() : EntitySizeInfo {
+		return new EntitySizeInfo(0.5, 0.9);
 	}
 
-	public function getType() : string {
-		return 'input';
+	public static function getNetworkTypeId() : string {
+		return EntityIds::PHANTOM;
 	}
 
-	public function handler($data) : bool|int|string {
-		return $data;
+	public function getName() : string {
+		return 'phantom';
 	}
-
-	public function jsonSerialize() : array {
-		return [
-			'type'        => $this->getType(),
-			'text'        => $this->text,
-			'placeholder' => $this->placeholder,
-			'default'     => $this->default
-		];
-	}
-
 }

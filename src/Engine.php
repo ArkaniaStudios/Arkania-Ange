@@ -25,6 +25,7 @@ namespace arkania;
 use arkania\commands\CommandCache;
 use arkania\commands\default\LanguageCommand;
 use arkania\commands\default\MaintenanceCommand;
+use arkania\commands\default\NpcCommand;
 use arkania\commands\default\PluginCommand;
 use arkania\commands\default\ReplyCommand;
 use arkania\commands\default\TellCommand;
@@ -52,6 +53,7 @@ use arkania\plugins\ServerLoader;
 use arkania\rank\RankManager;
 use arkania\utils\AlreadyInstantiatedException;
 use arkania\utils\BadExtensionException;
+use arkania\utils\Loader;
 use arkania\webhook\AlreadyRegisteredException;
 use arkania\webhook\WebhookManager;
 use arkania\webhook\WebhookNamesKeys;
@@ -108,6 +110,7 @@ class Engine extends PluginBase {
 		$this->itemManager         = new ItemManager();
 		$this->resourcePackManager = new ResourcePackManager($this);
 		$this->rankManager         = new RankManager($this);
+		new Loader();
 
 		$this->getServerManager()->addServer(
 			new EngineServer(
@@ -137,6 +140,7 @@ class Engine extends PluginBase {
 
 		$this->getCommandCache()->registerCommands(
 			new LanguageCommand(),
+			new NpcCommand(),
 			new MaintenanceCommand($this),
 			new PluginCommand(),
 			new ReplyCommand(),
@@ -148,7 +152,8 @@ class Engine extends PluginBase {
 			new PlayerJoinListener(),
 			new PlayerReceiveFormListener(),
 			new DataPacketSendListener(),
-			new PlayerChangeLanguageListener()
+			new PlayerChangeLanguageListener(),
+			new DataPacketSendListener(),
 		);
 
 		$this->serverLoader->enableEnginePlugins();

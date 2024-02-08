@@ -20,40 +20,25 @@
 
 declare(strict_types=1);
 
-namespace arkania\form\element\elements;
+/**
+ *     _      ____    _  __     _      _   _   ___      _             __     __  ____
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \            \ \   / / |___ \
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \    _____   \ \ / /    __) |
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \  |_____|   \ V /    / __/
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\            \_/    |_____|
+ *
+ * @author: Julien
+ * @link: https://github.com/ArkaniaStudios
+ */
 
-class Input extends Element {
-	private string $text;
-	private ?string $placeholder;
-	private ?string $default;
+namespace arkania\npc\utils;
 
-	public function __construct(
-		string $name,
-		string $text = '',
-		?string $placeholder = null,
-		?string $default = null
-	) {
-		parent::__construct($name);
-		$this->text        = $text;
-		$this->placeholder = $placeholder;
-		$this->default     = $default;
-	}
-
-	public function getType() : string {
-		return 'input';
-	}
-
-	public function handler($data) : bool|int|string {
-		return $data;
-	}
-
-	public function jsonSerialize() : array {
-		return [
-			'type'        => $this->getType(),
-			'text'        => $this->text,
-			'placeholder' => $this->placeholder,
-			'default'     => $this->default
-		];
-	}
+interface ConfigKeys {
+	public const FALLBACK_ENTITY      = "fallback_entity";
+	public const ENTITY_IDENTIFIER    = "identifier";
+	public const ENTITY_BEHAVIOR_ID   = "behavior_id";
+	public const ENTITY_RUNTIME_ID    = "runtime_id";
+	public const ENTITY_HAS_SPAWNEGG  = "has_spawnegg";
+	public const ENTITY_IS_SUMMONABLE = "is_summonable";
 
 }

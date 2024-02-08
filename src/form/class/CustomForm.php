@@ -68,7 +68,7 @@ class CustomForm extends BaseForm {
 				$data[$elementName . '-' . $count[$elementName]] = $element->handle($value);
 			} else {
 				$count[$elementName] = 1;
-				$data[$elementName]  = $element->handle($value);
+				$data[$elementName]  = $element->handler($value);
 			}
 			unset($data[$key]);
 		}

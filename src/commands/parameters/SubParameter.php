@@ -27,7 +27,6 @@ use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
-use RuntimeException;
 use function strtolower;
 
 class SubParameter extends Parameter {
@@ -38,7 +37,7 @@ class SubParameter extends Parameter {
 	) {
 		parent::__construct($name, $isOptional);
 		$this->getCommandParameter()->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | AvailableCommandsPacket::ARG_FLAG_ENUM;
-		EnumStore::addEnum($this->getCommandParameter()->enum = new CommandEnum(strtolower($name), [strtolower($subCommandType)]));
+		EnumStore::addEnum($this->getCommandParameter()->enum = new CommandEnum(strtolower($name), [strtolower($name)]));
 	}
 
 	public function getNetworkType() : int {
@@ -49,8 +48,8 @@ class SubParameter extends Parameter {
 		return true;
 	}
 
-	public function parse(string $argument, CommandSender $sender) : mixed {
-		throw new RuntimeException("SubParameter cannot be parsed");
+	public function parse(string $argument, CommandSender $sender) : string {
+		return $argument;
 	}
 
 }
