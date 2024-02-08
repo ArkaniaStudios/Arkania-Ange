@@ -1,4 +1,23 @@
 <?php
+
+/*
+ *     _      ____    _  __     _      _   _   ___      _              _____   _   _    ____   ___   _   _   _____
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \            | ____| | \ | |  / ___| |_ _| | \ | | | ____|
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \    _____  |  _|   |  \| | | |  _   | |  |  \| | |  _|
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \  |_____| | |___  | |\  | | |_| |  | |  | |\  | | |___
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\         |_____| |_| \_|  \____| |___| |_| \_| |_____|
+ *
+ * ArkaniaStudios-ANGE, une API conçue pour simplifier le développement.
+ * Fournissant des outils et des fonctionnalités aux développeurs.
+ * Cet outil est en constante évolution et est régulièrement mis à jour,
+ * afin de répondre aux besoins changeants de la communauté.
+ *
+ * @author Julien
+ * @link https://arkaniastudios.com
+ * @version 0.2.0-beta
+ *
+ */
+
 declare(strict_types=1);
 
 namespace arkania\packs;
@@ -10,23 +29,23 @@ use pocketmine\event\Event;
 use Symfony\Component\Filesystem\Path;
 
 class ResourcePackLoadEvent extends Event implements Cancellable {
-    use CancellableTrait;
+	use CancellableTrait;
 
-    /** @var string[]|null */
-    private ?array $resourcePackPath = null;
+	/** @var string[]|null */
+	private ?array $resourcePackPath = null;
 
-    public function addResourcesPackFile(string $packName, ResourcesPackFile $packFile) : void {
-        $this->resourcePackPath[$packName] = $packFile->getResourcePackPath();
-        $packFile->savePackInData($packFile->getResourcePackPath());
-        $packFile->zipPack(
-            $packFile->getResourcePackPath(),
-            Path::join(Engine::getInstance()->getEngineFile(), 'packs'),
-            $packName
-        );
-    }
+	public function addResourcesPackFile(string $packName, ResourcesPackFile $packFile) : void {
+		$this->resourcePackPath[$packName] = $packFile->getResourcePackPath();
+		$packFile->savePackInData($packFile->getResourcePackPath());
+		$packFile->zipPack(
+			$packFile->getResourcePackPath(),
+			Path::join(Engine::getInstance()->getEngineFile(), 'packs'),
+			$packName
+		);
+	}
 
-    public function getResourcePackPath() : ?array {
-        return $this->resourcePackPath;
-    }
+	public function getResourcePackPath() : ?array {
+		return $this->resourcePackPath;
+	}
 
 }

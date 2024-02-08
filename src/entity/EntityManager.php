@@ -20,9 +20,7 @@
 
 declare(strict_types=1);
 
-namespace arkania\events;
+namespace arkania\entity;
 
-use pocketmine\event\Listener;
-
-interface EngineListener extends Listener {
+class EntityManager {
 }

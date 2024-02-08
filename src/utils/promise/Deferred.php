@@ -1,56 +1,70 @@
 <?php
+
+/*
+ *     _      ____    _  __     _      _   _   ___      _              _____   _   _    ____   ___   _   _   _____
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \            | ____| | \ | |  / ___| |_ _| | \ | | | ____|
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \    _____  |  _|   |  \| | | |  _   | |  |  \| | |  _|
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \  |_____| | |___  | |\  | | |_| |  | |  | |\  | | |___
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\         |_____| |_| \_|  \____| |___| |_| \_| |_____|
+ *
+ * ArkaniaStudios-ANGE, une API conçue pour simplifier le développement.
+ * Fournissant des outils et des fonctionnalités aux développeurs.
+ * Cet outil est en constante évolution et est régulièrement mis à jour,
+ * afin de répondre aux besoins changeants de la communauté.
+ *
+ * @author Julien
+ * @link https://arkaniastudios.com
+ * @version 0.2.0-beta
+ *
+ */
+
 declare(strict_types=1);
 
 namespace arkania\utils\promise;
+
 use ReflectionException;
+use Throwable;
 
 /**
  * @template T
  */
 class Deferred {
+	/** @var PromiseInterface<T> */
+	private PromiseInterface $promise;
 
-    /**
-     * @var PromiseInterface<T>
-     */
-    private PromiseInterface $promise;
+	/** @var callable(T):void */
+	private $resolveCallback;
 
-    /** @var callable(T):void */
-    private $resolveCallback;
+	/** @var callable(Throwable):void */
+	private $rejectCallback;
 
-    /** @var callable(\Throwable):void */
-    private $rejectCallback;
+	/**
+	 * @param (callable(callable(T):void,callable(Throwable):void):void)|null $canceller
+	 * @throws ReflectionException
+	 */
+	public function __construct(callable $canceller = null) {
+		$this->promise = new Promise(function ($resolve, $reject) : void {
+			$this->resolveCallback = $resolve;
+			$this->rejectCallback  = $reject;
+		}, $canceller);
+	}
 
-    /**
-     * @param (callable(callable(T):void,callable(\Throwable):void):void)|null $canceller
-     * @throws ReflectionException
-     */
-    public function __construct(callable $canceller = null)
-    {
-        $this->promise = new Promise(function ($resolve, $reject): void {
-            $this->resolveCallback = $resolve;
-            $this->rejectCallback  = $reject;
-        }, $canceller);
-    }
+	/**
+	 * @return PromiseInterface<T>
+	 */
+	public function promise() : PromiseInterface {
+		return $this->promise;
+	}
 
-    /**
-     * @return PromiseInterface<T>
-     */
-    public function promise(): PromiseInterface
-    {
-        return $this->promise;
-    }
+	/**
+	 * @param T $value
+	 */
+	public function resolve($value) : void {
+		($this->resolveCallback)($value);
+	}
 
-    /**
-     * @param T $value
-     */
-    public function resolve($value): void
-    {
-        ($this->resolveCallback)($value);
-    }
-
-    public function reject(\Throwable $reason): void
-    {
-        ($this->rejectCallback)($reason);
-    }
+	public function reject(Throwable $reason) : void {
+		($this->rejectCallback)($reason);
+	}
 
 }
