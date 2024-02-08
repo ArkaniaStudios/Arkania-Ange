@@ -1,0 +1,24 @@
+{
+  "format_version": 1,
+  "header": {
+    "name": "Arkania-Pack",
+    "description": "Arkania-ANGE Pack",
+    "uuid": "686392aa-d922-45c7-817d-0d2cd129759a",
+    "version": [
+      0,
+      0,
+      1
+    ]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "0928020f-e494-478c-ad39-0934bde23cb6",
+      "version": [
+        0,
+        0,
+        1
+      ]
+    }
+  ]
+}

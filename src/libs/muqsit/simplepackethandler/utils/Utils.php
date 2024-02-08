@@ -7,9 +7,14 @@
  *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \  |_____| | |___  | |\  | | |_| |  | |  | |\  | | |___
  * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\         |_____| |_| \_|  \____| |___| |_| \_| |_____|
  *
+ * ArkaniaStudios-ANGE, une API conçue pour simplifier le développement.
+ * Fournissant des outils et des fonctionnalités aux développeurs.
+ * Cet outil est en constante évolution et est régulièrement mis à jour,
+ * afin de répondre aux besoins changeants de la communauté.
+ *
  * @author Julien
  * @link https://arkaniastudios.com
- * @version 0.0.1
+ * @version 0.2.0-beta
  *
  */
 
@@ -17,13 +22,18 @@ declare(strict_types=1);
 
 namespace arkania\libs\muqsit\simplepackethandler\utils;
 
+use arkania\npc\base\CustomEntity;
+use arkania\npc\base\SimpleEntity;
+use arkania\utils\Loader;
 use Closure;
 use InvalidArgumentException;
+use pocketmine\entity\Location;
 use ReflectionFunction;
 use ReflectionNamedType;
 use function count;
 use function implode;
 use function is_a;
+use function strtolower;
 
 final class Utils {
 	/**
@@ -59,4 +69,13 @@ final class Utils {
 
 		throw new InvalidArgumentException("Closure must satisfy signature (" . implode(", ", $params) . ") : {$return_type}");
 	}
+
+	public static function getEntityById(Location $location, int|string $id) : null|CustomEntity|SimpleEntity {
+		if(!isset(Loader::$entities[strtolower($id)])) {
+			return null;
+		}
+		return new Loader::$entities[strtolower($id)]($location);
+
+	}
+
 }

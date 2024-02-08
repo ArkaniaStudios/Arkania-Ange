@@ -127,9 +127,14 @@ return (new Config())
  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \  |_____| | |___  | |\  | | |_| |  | |  | |\  | | |___  
 /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\         |_____| |_| \_|  \____| |___| |_| \_| |_____|
 
+ArkaniaStudios-ANGE, une API conçue pour simplifier le développement. 
+Fournissant des outils et des fonctionnalités aux développeurs.
+Cet outil est en constante évolution et est régulièrement mis à jour,
+afin de répondre aux besoins changeants de la communauté.
+
 @author Julien
 @link https://arkaniastudios.com
-@version 0.0.1-beta
+@version 0.2.0-beta
 
 BODY,
             'location' => 'after_open'
