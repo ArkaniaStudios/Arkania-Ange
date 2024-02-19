@@ -29,11 +29,8 @@ use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use Throwable;
-use function _checkTypehint;
 use function is_array;
 use function is_object;
-use function reject;
-use function resolve;
 
 final class Promise implements PromiseInterface {
 	/** @var callable */

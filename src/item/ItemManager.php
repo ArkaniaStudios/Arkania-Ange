@@ -41,6 +41,7 @@ use pocketmine\network\mcpe\protocol\types\ItemTypeEntry;
 use pocketmine\world\format\io\GlobalItemDataHandlers;
 use ReflectionClass;
 use ReflectionException;
+
 use function array_keys;
 use function array_map;
 use function count;
@@ -52,9 +53,12 @@ use function is_string;
 use function range;
 
 class ItemManager {
-	public function __construct(
+	public static function get() : self {
+		return new self();
+	}
 
-	) {
+	public function __construct() {
+
 		$this->registerItem(
 			ItemTypesNames::ITEM_TEST,
 			ExtraItems::ITEM_TEST(),
@@ -70,6 +74,10 @@ class ItemManager {
 	/** @var ItemTypeEntry[] */
 	private array $itemsEntries = [];
 
+	/**
+	 * @throws ReflectionException
+	 * @throws Exception
+	 */
 	public function registerItem(string $id, BaseItem $item, array $stringToItemParserNames) : void {
 		GlobalItemDataHandlers::getDeserializer()->map($id, fn () => clone $item);
 		GlobalItemDataHandlers::getSerializer()->map($item, fn () => new SavedItemData($id));
@@ -142,5 +150,4 @@ class ItemManager {
 		}
 		return $tag;
 	}
-
 }

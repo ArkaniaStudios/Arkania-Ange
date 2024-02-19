@@ -8,6 +8,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 $finder = Finder::create()
+    ->exclude('src/utils/promise/')
     ->in('src/');
 
 return (new Config())
