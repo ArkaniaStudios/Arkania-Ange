@@ -17,6 +17,7 @@ player.not.found=§cLe joueur {%0} n'a pas été trouvé.
 form.cant.use.button=§cVous ne pouvez pas utiliser ce bouton.
 form.cant.open=§cVous ne pouvez pas ouvrir ce formulaire.
 
+command.argument.invalid=§cArgument invalide. Utilisation: {%0}
 command.language.description=Changer votre langage.
 command.language.changed=§aVotre langage a été changé en §e{%0}§a.
 command.maintenance.description=Activer ou désactiver la maintenance.

@@ -1,5 +1,5 @@
 name: Arkania-Ange
-version: 0.2.1-beta
+version: 1.0.0
 main: arkania\Engine
 src-namespace-prefix: arkania
 api: 5.0.0

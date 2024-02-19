@@ -24,6 +24,7 @@ namespace arkania\commands;
 
 use arkania\commands\parameters\Parameter;
 use arkania\commands\parameters\TextParameter;
+use arkania\lang\KnownTranslationsFactory;
 use InvalidArgumentException;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -63,31 +64,37 @@ abstract class CommandBase extends Command {
 	abstract public function onRun(CommandSender $sender, array $parameters) : void;
 	abstract public function getCommandParameter() : array;
 
-	final public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
-		$passArgs = [];
-		if (count($args) > 0) {
-			if (isset($this->subCommands[($label = $args[0])])) {
-				$cmd = $this->subCommands[$label];
-				if (!$cmd->testPermissionSilent($sender)) {
-					$sender->sendMessage(KnownTranslationFactory::commands_generic_permission());
-					return;
-				}
-				$cmd->execute($sender, $commandLabel, array_slice($args, 1));
-				return;
-			}
-			$passArgs = $this->parseArguments($args, $sender);
-		} elseif (!empty($this->parameters)) {
-			$sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->usageMessage ?? '/' . $this->getName()));
-			return;
-		}
-		if ($passArgs !== null) {
-			try {
-				$this->onRun($sender, $passArgs);
-			} catch (InvalidCommandSyntaxException) {
-				$sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->usageMessage ?? '/' . $this->getName()));
-			}
-		}
-	}
+    final public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
+        $passArgs = [];
+        if (count($args) > 0) {
+            if (isset($this->subCommands[($label = $args[0])])) {
+                $cmd = $this->subCommands[$label];
+                if (!$cmd->testPermissionSilent($sender)) {
+                    $sender->sendMessage(KnownTranslationFactory::commands_generic_permission());
+                    return;
+                }
+                $cmd->execute($sender, $commandLabel, array_slice($args, 1));
+                return;
+            }
+            $passArgs = $this->parseArguments($args, $sender);
+        } elseif (!empty($this->parameters)) {
+            foreach ($this->parameters as $parameter) {
+                if (!$parameter[0]->isOptional()) {
+                    $sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->usageMessage ?? '/' . $this->getName()));
+                    return;
+                }
+            }
+        }
+        if ($passArgs !== null) {
+            try {
+                $this->onRun($sender, $passArgs);
+            } catch (InvalidCommandSyntaxException $e) {
+                if (!$e->getParameter()->isOptional()) {
+                    $sender->sendMessage(KnownTranslationFactory::commands_generic_usage($this->usageMessage ?? '/' . $this->getName()));
+                }
+            }
+        }
+    }
 
 	public function addParameter(int $position, Parameter $parameter) : void {
 		if($position < 0) {
@@ -107,54 +114,57 @@ abstract class CommandBase extends Command {
 		$this->parameters[$position][] = $parameter;
 	}
 
-	private function parseArguments(array $rawArgs, CommandSender $sender) : array {
-		$return = [];
-		if(!!empty($this->parameters) && count($rawArgs) > 0) {
-			return $return;
-		}
-		$offset = 0;
-		if(count($rawArgs) > 0) {
-			foreach ($this->parameters as $position => $parameter) {
-				usort($parameter, function (Parameter $a, Parameter $b) : int {
-					if ($a->getSpanLength() === PHP_INT_MAX) {
-						return 1;
-					}
+    private function parseArguments(array $rawArgs, CommandSender $sender) : ?array {
+        $return = [];
+        if(!!empty($this->parameters) && count($rawArgs) > 0) {
+            return $return;
+        }
+        $offset = 0;
+        if(count($rawArgs) > 0) {
+            foreach ($this->parameters as $position => $parameter) {
+                usort($parameter, function (Parameter $a, Parameter $b) : int {
+                    if ($a->getSpanLength() === PHP_INT_MAX) {
+                        return 1;
+                    }
 
-					return -1;
-				});
-				$parsed   = false;
-				$optional = true;
-				foreach ($parameter as $param) {
-					$p = trim(implode(" ", array_slice($rawArgs, $offset, ($len = $param->getSpanLength()))));
-					if (!$param->isOptional()) {
-						$optional = false;
-					}
-					if ($p !== "" && $param->canParse($p, $sender)) {
-						$k      = $param->getName();
-						$result = (clone $param)->parse($p, $sender);
-						if (isset($return[$k]) && !is_array($return[$k])) {
-							$old = $return[$k];
-							unset($return[$k]);
-							$return[$k]   = [$old];
-							$return[$k][] = $result;
-						} else {
-							$return[$k] = $result;
-						}
-						$offset += $len;
-						$parsed = true;
-						break;
-					}
-					if ($offset > count($rawArgs)) {
-						break;
-					}
-				}
-				if (!$parsed && !($optional && empty($arg))) {
-					return $return;
-				}
-			}
-		}
-		return $return;
-	}
+                    return -1;
+                });
+                $parsed   = false;
+                $optional = false;
+                foreach ($parameter as $param) {
+                    $p = trim(implode(" ", array_slice($rawArgs, $offset, ($len = $param->getSpanLength()))));
+                    if ($param->isOptional()) {
+                        $optional = true;
+                    }
+                    if ($p !== "" && $param->canParse($p, $sender)) {
+                        $k      = $param->getName();
+                        $result = (clone $param)->parse($p, $sender);
+                        if (isset($return[$k]) && !is_array($return[$k])) {
+                            $old = $return[$k];
+                            unset($return[$k]);
+                            $return[$k]   = [$old];
+                            $return[$k][] = $result;
+                        } else {
+                            $return[$k] = $result;
+                        }
+                        $offset += $len;
+                        $parsed = true;
+                        break;
+                    } else if ($param->isOptional()) {
+                        $parsed = true;
+                        break;
+                    } else {
+                        $sender->sendMessage(KnownTranslationsFactory::command_argument_invalid($param->getName()));
+                        return null;
+                    }
+                }
+                if (!$parsed && !$optional) {
+                    return $return;
+                }
+            }
+        }
+        return $return;
+    }
 
 	public function getParameters() : array {
 		return $this->parameters;

@@ -46,7 +46,7 @@ class DataPacketSendListener implements EngineListener {
 					);
 				}
 			} elseif($packet instanceof StartGamePacket) {
-				$packet->itemTable = array_merge($packet->itemTable, $itemManager->getItemsEntries());
+				$packet->itemTable    = array_merge($packet->itemTable, $itemManager->getItemsEntries());
 			} elseif($packet instanceof ResourcePackStackPacket) {
 				$packet->experiments = new Experiments([
 					"data_driven_items" => true

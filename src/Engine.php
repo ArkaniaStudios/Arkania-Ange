@@ -50,7 +50,6 @@ use arkania\player\permissions\MissingPermissionException;
 use arkania\player\permissions\PermissionsBase;
 use arkania\player\permissions\PermissionsManager;
 use arkania\plugins\ServerLoader;
-use arkania\rank\RankManager;
 use arkania\utils\AlreadyInstantiatedException;
 use arkania\utils\BadExtensionException;
 use arkania\utils\Loader;
@@ -62,7 +61,9 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use ReflectionException;
 use Symfony\Component\Filesystem\Path;
+
 use function count;
+
 use const PHP_VERSION;
 
 require_once __DIR__ . '/CoreConstants.php';
@@ -86,7 +87,6 @@ class Engine extends PluginBase {
 	private CommandCache $commandCache;
 	private ItemManager $itemManager;
 	private ResourcePackManager $resourcePackManager;
-	private RankManager $rankManager;
 
 	/**
 	 * @throws BadExtensionException
@@ -109,7 +109,6 @@ class Engine extends PluginBase {
 		$this->commandCache        = new CommandCache($this);
 		$this->itemManager         = new ItemManager();
 		$this->resourcePackManager = new ResourcePackManager($this);
-		$this->rankManager         = new RankManager($this);
 		new Loader();
 
 		$this->getServerManager()->addServer(
@@ -145,7 +144,7 @@ class Engine extends PluginBase {
 			new PluginCommand(),
 			new ReplyCommand(),
 			new TellCommand(),
-			new VersionCommand(),
+			new VersionCommand()
 		);
 
 		$this->getListenerManager()->registerListeners(
@@ -261,9 +260,4 @@ class Engine extends PluginBase {
 	public function getResourcePackManager() : ResourcePackManager {
 		return $this->resourcePackManager;
 	}
-
-	public function getRankManager() : RankManager {
-		return $this->rankManager;
-	}
-
 }
