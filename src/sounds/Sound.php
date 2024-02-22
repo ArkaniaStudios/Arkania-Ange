@@ -1,12 +1,12 @@
 <?php
 
-namespace arkania\utils;
+namespace arkania\sounds;
 
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\player\Player;
 use pocketmine\utils\SingletonTrait;
 
-class Utils {
+class Sound {
     use SingletonTrait;
 
     public function playSound(Player $player, string $soundName, int $volume = 100, int $pitch = 1): void {
