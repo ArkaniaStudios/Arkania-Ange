@@ -17,6 +17,9 @@ Voici la liste des personnes qui ont contribué au développement de l'Engine ou
 
 - Tezuls
     - [GitHub](https://github.com/TEZULS)
+ 
+- JustTim
+    - [GitHub](https://github.com/JustTimmm)
 
 ### Modélisation :
 
